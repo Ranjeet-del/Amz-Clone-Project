@@ -1,0 +1,74 @@
+<script >
+    // script.js
+    
+    // Cart Array
+    let cart = [];
+    
+    // Add Event Listeners to "Add to Cart" buttons
+    document.querySelectorAll('.add-to-cart').forEach(button => {
+      button.addEventListener('click', addToCart);
+    });
+    
+    function addToCart(event) {
+      const itemElement = event.target.parentElement;
+      const itemId = itemElement.getAttribute('data-id');
+      const itemName = itemElement.getAttribute('data-name');
+      const itemPrice = parseFloat(itemElement.getAttribute('data-price'));
+    
+      // Check if the item is already in the cart
+      const existingItem = cart.find(item => item.id === itemId);
+    
+      if (existingItem) {
+        // If item is already in the cart, increase its quantity
+        existingItem.quantity += 1;
+      } else {
+        // Add new item to the cart
+        cart.push({ id: itemId, name: itemName, price: itemPrice, quantity: 1 });
+      }
+    
+      updateCart();
+    }
+    
+    // Update the Cart Display
+    function updateCart() {
+      const cartItemsElement = document.getElementById('cart-items');
+      const cartTotalElement = document.getElementById('cart-total');
+      const checkoutButton = document.getElementById('checkout');
+    
+      // Clear the cart items list
+      cartItemsElement.innerHTML = '';
+    
+      let total = 0;
+    
+      // Loop through the cart and create list items
+      cart.forEach(item => {
+        total += item.price * item.quantity;
+    
+        const listItem = document.createElement('li');
+        listItem.innerHTML = `
+          <span>${item.name} (x${item.quantity})</span>
+          <span>₹${(item.price * item.quantity).toFixed(2)}</span>
+          <button onclick="removeFromCart('${item.id}')">Remove</button>
+        `;
+        cartItemsElement.appendChild(listItem);
+      });
+    
+      // Update total price
+      cartTotalElement.textContent = `Total: ₹${total.toFixed(2)}`;
+    
+      // Show checkout button if cart has items
+      checkoutButton.style.display = cart.length > 0 ? 'block' : 'none';
+    }
+    
+    // Remove Item from Cart
+    function removeFromCart(itemId) {
+      // Find the index of the item to be removed
+      const itemIndex = cart.findIndex(item => item.id === itemId);
+      
+      if (itemIndex !== -1) {
+        cart.splice(itemIndex, 1); // Remove item from cart
+        updateCart(); // Refresh the cart display
+      }
+    }
+    
+      </script> 

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account</title>
+    
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: url(login\ back.jpeg) ;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #748fb4;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #3e0aea;
+            margin-bottom: 20px;
+        }
+        .profile-info, .order-info {
+            margin-bottom: 30px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .profile-info h3, .order-info h3 {
+            margin-top: 0;
+        }
+        .order-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .order-list li {
+            background: #aca8a8;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 15px;
+            margin-top: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div> 
+        <li><a href="index.html"><b>  Home</b></a></li>
+    </div>
+
+<div class="container">
+    <h2>My Account</h2>
+    
+    <div class="profile-info">
+        <h3>Profile Information</h3>
+        <p><strong>Name:</strong> <span id="userName">Ranjeet Singh</span></p>
+        <p><strong>Email:</strong> <span id="userEmail">ranjeetsingh79386@gmail.com</span></p>
+        <p><strong>Mobile No:</strong> <span id="userMobile">+917847982493</span></p>
+        <a href="#" class="btn" onclick="editProfile()">Edit Profile</a>
+    </div>
+
+    <div class="order-info">
+        <h3>My Orders</h3>
+        <ul class="order-list" id="orderList">
+            <li>
+                Order ID: <span class="order-id">ORD-12345</span> - Status: <span class="order-status">Processing</span>
+                <a href="#" class="btn" onclick="viewDeliveryStatus('ORD-12345')">View Delivery Status</a>
+            </li>
+            <li>
+                Order ID: <span class="order-id">ORD-67890</span> - Status: <span class="order-status">Delivered</span>
+                <a href="#" class="btn" onclick="viewDeliveryStatus('ORD-67890')">View Delivery Status</a>
+            </li>
+            <li>
+                Order ID: <span class="order-id">ORD-11223</span> - Status: <span class="order-status">Shipped</span>
+                <a href="#" class="btn" onclick="viewDeliveryStatus('ORD-11223')">View Delivery Status</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="btn-container">
+        <a href="index.html" class="btn">Shop Now</a>
+    </div>
+</div>
+
+<script>
+    function editProfile() {
+        const name = prompt("Enter your name:", document.getElementById('userName').innerText);
+        const email = prompt("Enter your email:", document.getElementById('userEmail').innerText);
+        const mobile = prompt("Enter your mobile number:", document.getElementById('userMobile').innerText);
+
+        if (name) {
+            document.getElementById('userName').innerText = name;
+        }
+        if (email) {
+            document.getElementById('userEmail').innerText = email;
+        }
+        if (mobile) {
+            document.getElementById('userMobile').innerText = mobile;
+        }
+    }
+
+    function viewDeliveryStatus(orderId) {
+        // Redirect to delivery status page with the order ID
+        window.location.href = 'delivery-status.html?orderId=' + orderId;
+    }
+</script>
+
+</body>
+</html>

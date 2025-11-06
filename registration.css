@@ -1,0 +1,97 @@
+/* Basic styling for the home page, registration, and login forms */
+body {
+    font-family: Arial, sans-serif;
+    background:url(login\ back.jpeg) no-repeat;
+   background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    background-color: transparent;
+    border: 2px solid #ddd;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    text-align: center;
+}
+
+h1, h2 {
+    margin-bottom: 20px;
+}
+
+p {
+    color: #989292;
+    font-size: 19px;
+    margin-bottom: 20px;
+}
+
+a {
+    text-decoration: none;
+}
+
+.register-btn, button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+   
+}
+
+.register-btn:hover, button:hover {
+    background-color: #0056b3;
+}
+
+.back-btn {
+    margin-top: 15px;
+    background-color: #28a745;
+}
+
+.back-btn:hover {
+    background-color: #218838;
+}
+
+.form-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: 90%;
+    padding: 10px;
+    margin-bottom: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.error-message {
+    color: red;
+    font-size: 12px;
+    display: none;
+    text-align: left;
+}
+
+.hidden {
+    display: none;
+}
+
+#success-message p, #login-message p {
+    color: green;
+}

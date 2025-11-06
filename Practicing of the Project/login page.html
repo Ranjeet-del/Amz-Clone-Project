@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Login Page </title>
+<link rel="stylesheet" href="login.css">
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
+
+</head>
+<body>
+     <div class="wrapper">
+        <form action="">
+            <h1>Login</h1>
+            <div class="input-box">
+                <input type="text" id="User Name" placeholder="User Name "required>
+                <i class="fa-solid fa-user"></i>
+            </div>
+                <div class="input-box">
+                    <input type="Password" id="Password" placeholder="Password "required >
+                    <i class="fa-solid fa-lock"></i>
+                 </div>
+
+                 <div class="Remember-forgot">
+                    <label><input type="checkbox">Remember Me </label>
+                  <a href="Forgot Password.html"> Forgot Password </a>
+                 </div><br>
+                 <button type="submit" class="btn" onclick="auth()"> Login</button>
+                 <div class="register-link">
+                <p>Don't have an Account ! <a href="Register.html"><b> Register </b></a> </p>    
+                </div>
+        </form>
+     <script>
+       function auth(){
+        var UserID=document.getElementById("User Name").value;
+        var Password=document.getElementById("Password").value;
+        if ( UserID=="Ranjeet" && Password=="Ranjeet123")
+        {
+        window.location.href="index.html";
+        alert("Login Successfully");
+        }
+        else
+        {
+            alert("Invalid User");
+            return;
+        }
+       }
+     </script>
+</body>
+</html>

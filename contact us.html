@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | Amz-Clone</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background:  url(login\ back.jpeg) no-repeat;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            font-size: 20px;
+        }
+        b{
+            font-size: 20px;
+         }
+        .container {
+            height: auto;
+            max-width: 700px;
+            margin: 50px auto;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            background: transparent;
+            border: 5px solid #ccc;
+        }
+        h1 {
+            text-align: center;
+            color: #a8a0a0;
+        }
+        p {
+            text-align: center;
+            color: #c8b6b6;
+            margin-bottom: 20px;
+        }
+        form {
+            width: 90%;
+            margin: 0 auto;
+            
+        }
+        .form-group {
+            margin-bottom: 15px;
+           
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #b8adad;
+        }
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            background: #d4d4c5;
+            border-radius: 5px;
+            font-size: 20px;
+        }
+        .form-group textarea {
+            resize: vertical;
+            height: 100px;
+        }
+        .form-group button {
+            width: 100%;
+            padding: 10px;
+            background-color: #ff9900;
+            border: none;
+            border-radius: 5px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        .form-group button:hover {
+            background-color: #e68a00;
+        }
+        .form-group span {
+            display: block;
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        .contact-info {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .contact-info p {
+            color: #b8b1b1;
+        }
+        .contact-info a {
+            color: #ff9900;
+            text-decoration: none;
+        }
+        .contact-info a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div> 
+        <li><a href="index.html"><b>  Home</b></a></li>
+    </div>
+
+    <div class="container">
+        <h1>Contact Us</h1>
+        <p>If you have any questions, feel free to reach out to us by filling the form below.</p>
+
+        <form id="contact-form">
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" placeholder="Enter your name" required>
+                <span id="name-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                <span id="email-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="subject">Subject</label>
+                <input type="text" id="subject" name="subject" placeholder="Enter the subject" required>
+                <span id="subject-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" placeholder="Enter your message" required></textarea>
+                <span id="message-error"></span>
+            </div>
+
+            <div class="form-group">
+                <button type="submit">Send Message</button>
+            </div>
+        </form>
+
+        <div class="contact-info">
+            <p>You can also reach us at: <a href="mailto:support@amz-clone.com">support@amz-clone.com</a></p>
+            <p>Or call us: <a href="tel:+917847982493"> +917847982493</a> / <a tel="+918144375464"> +918144375464</a> / <a tel="+919937821568">+919937821568</a></p>
+        </div>
+    </div>
+
+   
+
+    <script>
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Clear previous error messages
+            document.getElementById('name-error').textContent = '';
+            document.getElementById('email-error').textContent = '';
+            document.getElementById('subject-error').textContent = '';
+            document.getElementById('message-error').textContent = '';
+
+            // Get form values
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const subject = document.getElementById('subject').value.trim();
+            const message = document.getElementById('message').value.trim();
+
+            // Basic validation
+            let hasError = false;
+
+            if (name === '') {
+                document.getElementById('name-error').textContent = 'Name is required.';
+                hasError = true;
+            }
+            if (email === '' || !email.includes('@')) {
+                document.getElementById('email-error').textContent = 'A valid email is required.';
+                hasError = true;
+            }
+            if (subject === '') {
+                document.getElementById('subject-error').textContent = 'Subject is required.';
+                hasError = true;
+            }
+            if (message === '') {
+                document.getElementById('message-error').textContent = 'Message is required.';
+                hasError = true;
+            }
+
+            if (!hasError) {
+                // Simulate sending the message
+                alert('Your message has been sent successfully!');
+                
+                // Optionally, clear the form
+                document.getElementById('contact-form').reset();
+            }
+        });
+    </script>
+
+</body>
+</html>

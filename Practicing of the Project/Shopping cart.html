@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shopping Cart</title>
+  <style>
+    /* style.css */
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+#items, #cart {
+  margin-bottom: 20px;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+}
+
+.add-to-cart {
+  padding: 5px 10px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.add-to-cart:hover {
+  background-color: #218838;
+}
+
+#cart-items {
+  list-style: none;
+  padding: 0;
+}
+
+#cart-items li {
+  margin: 10px 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+#cart-items li span {
+  margin-right: 20px;
+}
+
+#checkout {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+#checkout:hover {
+  background-color: #0056b3;
+}
+
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Shopping Cart Example</h1>
+  </header>
+
+  <section id="items">
+    <h2>Items for Sale</h2>
+    <div class="item" data-id="1" data-name="Item 1" data-price="499">
+        <img src="Dresses/2 in 1 double ruoted.jpg" alt="">
+      <p>Item 1 - ₹499</p>
+      <button class="add-to-cart">Add to Cart</button>
+    </div>
+
+
+    <div class="item" data-id="2" data-name="Item 2" data-price="30">
+        <img src="Dresses/blue jeans shirt.jpg" alt="">
+      <p>Item 2 - $30</p>
+      <button class="add-to-cart">Add to Cart</button>
+    </div>
+    <div class="item" data-id="3" data-name="Item 3" data-price="70">
+      <p>Item 3 - $70</p>
+      <button class="add-to-cart">Add to Cart</button>
+    </div>
+  </section>
+
+  <section id="cart">
+    <h2>Your Cart</h2>
+    <ul id="cart-items"></ul>
+    <p id="cart-total">Total: ₹ 0</p>
+    <button id="checkout" style="display:none;">Checkout</button>
+  </section>
+
+  <script >
+// script.js
+
+// Cart Array
+let cart = [];
+
+// Add Event Listeners to "Add to Cart" buttons
+document.querySelectorAll('.add-to-cart').forEach(button => {
+  button.addEventListener('click', addToCart);
+});
+
+function addToCart(event) {
+  const itemElement = event.target.parentElement;
+  const itemId = itemElement.getAttribute('data-id');
+  const itemName = itemElement.getAttribute('data-name');
+  const itemPrice = parseFloat(itemElement.getAttribute('data-price'));
+
+  // Check if the item is already in the cart
+  const existingItem = cart.find(item => item.id === itemId);
+
+  if (existingItem) {
+    // If item is already in the cart, increase its quantity
+    existingItem.quantity += 1;
+  } else {
+    // Add new item to the cart
+    cart.push({ id: itemId, name: itemName, price: itemPrice, quantity: 1 });
+  }
+
+  updateCart();
+}
+
+// Update the Cart Display
+function updateCart() {
+  const cartItemsElement = document.getElementById('cart-items');
+  const cartTotalElement = document.getElementById('cart-total');
+  const checkoutButton = document.getElementById('checkout');
+
+  // Clear the cart items list
+  cartItemsElement.innerHTML = '';
+
+  let total = 0;
+
+  // Loop through the cart and create list items
+  cart.forEach(item => {
+    total += item.price * item.quantity;
+
+    const listItem = document.createElement('li');
+    listItem.innerHTML = `
+      <span>${item.name} (x${item.quantity})</span>
+      <span>₹${(item.price * item.quantity).toFixed(2)}</span>
+      <button onclick="removeFromCart('${item.id}')">Remove</button>
+    `;
+    cartItemsElement.appendChild(listItem);
+  });
+
+  // Update total price
+  cartTotalElement.textContent = `Total: ₹${total.toFixed(2)}`;
+
+  // Show checkout button if cart has items
+  checkoutButton.style.display = cart.length > 0 ? 'block' : 'none';
+}
+
+// Remove Item from Cart
+function removeFromCart(itemId) {
+  // Find the index of the item to be removed
+  const itemIndex = cart.findIndex(item => item.id === itemId);
+  
+  if (itemIndex !== -1) {
+    cart.splice(itemIndex, 1); // Remove item from cart
+    updateCart(); // Refresh the cart display
+  }
+}
+
+  </script>
+
+
+// Function to handle "Buy Now" action
+  function buyItems() {
+      // Perform purchase logic (e.g., send data to backend or process payment)
+      alert('Thank you for your purchase!');
+  
+      // Clear the cart
+      localStorage.removeItem('cart');
+  
+      // Refresh the cart display
+      displayCart();
+  }
+  
+  // Initialize the cart display when the page loads
+  displayCart();
+
+
+  <script>
+    // Function to render the cart items
+ function displayCart() {
+     let cart = JSON.parse(localStorage.getItem('cart')) || [];
+     let cartContainer = document.getElementById('cart-container');
+     cartContainer.innerHTML = ''; // Clear previous content
+ 
+     if (cart.length === 0) {
+         cartContainer.innerHTML = '<p>Your cart is empty</p>';
+         return;
+     }
+ 
+     cart.forEach((item, index) => {
+         cartContainer.innerHTML += `
+             <div class="cart-item">
+                 <img src="${item.image}" alt="${item.name}">
+                 <h5>${item.name}</h5>
+                 <p>Price: ₹${item.price}</p>
+                 <button class="remove-btn" data-index="${index}">Remove</button>
+             </div>
+         `;
+     });
+ 
+     // Add a "Buy Now" button if cart is not empty
+     cartContainer.innerHTML += `
+         <button id="buyButton" class="buy-btn">Buy Now</button>
+     `;
+ 
+     // Attach event listeners to remove buttons
+     document.querySelectorAll('.remove-btn').forEach(button => {
+         button.addEventListener('click', function() {
+             const index = this.dataset.index;
+             removeFromCart(index);
+         });
+     });
+ 
+     // Attach event listener to the "Buy Now" button
+     document.getElementById('buyButton').addEventListener('click', function() {
+         buyItems();
+     });
+ }
+ 
+ // Function to remove item from cart
+ function removeFromCart(index) {
+     let cart = JSON.parse(localStorage.getItem('cart')) || [];
+     cart.splice(index, 1); // Remove the item from the array
+     localStorage.setItem('cart', JSON.stringify(cart)); // Update localStorage
+     displayCart(); // Refresh the cart display
+ }
+ 
+// Function to handle "Buy Now" action
+function buyItems() {
+     // Perform purchase logic (e.g., send data to backend or process payment)
+     alert('Thank you for your purchase!');
+ 
+     // Clear the cart
+     localStorage.removeItem('cart');
+ 
+     // Refresh the cart display
+     displayCart();
+ }
+ 
+ // Initialize the cart display when the page loads
+ displayCart();
+
+ </script>
+
+
+</body>
+</html>

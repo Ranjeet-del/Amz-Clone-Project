@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delivery Information</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url(login\ back.jpeg) no-repeat;
+            background-size: cover;
+            margin: 0;
+            padding: 100px;
+        }
+        .delivery-form {
+            background: rgb(124, 118, 118);
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            width: 500px;
+            height: 500px;
+            margin: auto;
+            font-size: 20px;
+        }
+        .delivery-form h2 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .delivery-form input, .delivery-form button {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 5px solid #ddd;
+            border-radius: 5px;
+            font-size: 20px ;
+        }
+        .delivery-form button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 20px ;
+            margin-left: 20px;
+        }
+        .delivery-form button:hover {
+            background-color: #0056b3;
+        }
+        b{
+            font-size: 20px;
+         }
+    </style>
+</head>
+<body>
+<div> 
+    <li><a href="index.html"><b>  Home</b></a></li>
+</div>
+
+<div class="delivery-form">
+    <h2>Delivery Information</h2>
+    <input type="text" id="name" placeholder="Full Name" required>
+    <input type="text" id="address" placeholder="Address" required>
+    <input type="text" id="city" placeholder="City" required>
+    <input type="text" id="state" placeholder="State" required>
+    <input type="text" id="mobile" placeholder="Mobile Number" required>
+    <button id="submitDelivery">Submit</button>
+</div>
+
+<script>
+    document.getElementById('submitDelivery').addEventListener('click', function() {
+        const name = document.getElementById('name').value;
+        const address = document.getElementById('address').value;
+        const city = document.getElementById('city').value;
+        const state = document.getElementById('state').value;
+        const mobile = document.getElementById('mobile').value;
+
+        // Validate inputs
+        if (!name || !address || !city || !state || !mobile) {
+            alert('Please fill in all fields.');
+            return;
+        }
+
+        // Store delivery information in local storage
+        const deliveryInfo = {
+            name,
+            address,
+            city,
+            state,
+            mobile,
+        };
+        localStorage.setItem('deliveryInfo', JSON.stringify(deliveryInfo));
+
+        // Redirect to payment page
+        window.location.href = 'payment.html';
+    });
+</script>
+
+</body>
+</html>

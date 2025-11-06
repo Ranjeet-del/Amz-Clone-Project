@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Options</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: url(login\ back.jpeg) no-repeat;
+            background-size: cover;
+            margin: 0;
+            padding: 20px;
+            color: #010000;
+        }
+        .payment-container {
+            background-color: rgb(120, 85, 85);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            margin: auto;
+            transition: transform 0.3s;
+            margin-top: 100px;
+        }
+        .payment-container:hover {
+            transform: translateY(-5px);
+        }
+        .payment-container h2 {
+            text-align: center;
+            color: #007bff;
+            margin-bottom: 30px;
+            font-size: 24px;
+           
+        }
+        .payment-option {
+
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            transition: border-color 0.3s;
+            cursor: pointer;
+        }
+        .payment-option:hover {
+            border-color: #007bff;
+            background-color: #b3b6b9;
+        }
+        .payment-option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .payment-info {
+            display: none; /* Hidden by default */
+            margin-top: 20px;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .payment-info h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        .submit-button {
+            background-color: #007bff;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 18px;
+            transition: background-color 0.3s, transform 0.3s;
+            margin-top: 20px;
+        }
+        .submit-button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+        .input-field {
+            width: 95%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .input-field:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+    </style>
+</head>
+<body>
+
+<div class="payment-container">
+    <h2>Select Payment Method</h2>
+    <div class="payment-option">
+        <label>
+            <input type="radio" name="paymentMethod" value="cod" required>
+            Cash on Delivery
+        </label>
+    </div>
+    <div class="payment-option">
+        <label>
+            <input type="radio" name="paymentMethod" value="bank" required>
+            Bank Transfer
+        </label>
+    </div>
+    <div class="payment-option">
+        <label>
+            <input type="radio" name="paymentMethod" value="upi" required>
+            UPI Payment
+        </label>
+    </div>
+
+    <div class="payment-info" id="paymentInfo">
+        <h3>Payment Information</h3>
+        <div id="codInfo" style="display: none;">
+            <p>You will pay cash upon delivery.</p>
+        </div>
+        <div id="bankInfo" style="display: none;">
+            <label for="name">Name on Card:</label>
+            <input type="text" id="name" class="input-field" placeholder="Enter your name" required>
+            <label for="cardNumber">Card Number:</label>
+            <input type="text" id="cardNumber" class="input-field" placeholder="Enter your card number" required>
+            <label for="expiry">Expiry Date:</label>
+            <input type="text" id="expiry" class="input-field" placeholder="MM/YY" required>
+            <label for="cvv">CVV:</label>
+            <input type="text" id="cvv" class="input-field" placeholder="Enter CVV" required>
+        </div>
+        <div id="upiInfo" style="display: none;">
+            <label for="upiId">UPI ID:</label>
+            <input type="text" id="upiId" class="input-field" placeholder="Enter your UPI ID" required>
+        </div>
+    </div>
+    
+    <button class="submit-button" id="submitPayment">Proceed to Payment</button>
+</div>
+
+<script>
+    // Show payment information based on selected method
+    document.querySelectorAll('input[name="paymentMethod"]').forEach(function(element) {
+        element.addEventListener('change', function() {
+            const paymentInfo = document.getElementById('paymentInfo');
+            const codInfo = document.getElementById('codInfo');
+            const bankInfo = document.getElementById('bankInfo');
+            const upiInfo = document.getElementById('upiInfo');
+            
+            paymentInfo.style.display = 'block'; // Show payment info section
+            
+            // Show relevant fields based on selected payment method
+            if (this.value === 'cod') {
+                codInfo.style.display = 'block';
+                bankInfo.style.display = 'none';
+                upiInfo.style.display = 'none';
+            } else if (this.value === 'bank') {
+                codInfo.style.display = 'none';
+                bankInfo.style.display = 'block';
+                upiInfo.style.display = 'none';
+            } else if (this.value === 'upi') {
+                codInfo.style.display = 'none';
+                bankInfo.style.display = 'none';
+                upiInfo.style.display = 'block';
+            }
+        });
+    });
+
+    document.getElementById('submitPayment').addEventListener('click', function() {
+        const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked');
+        const name = document.getElementById('name').value;
+        const cardNumber = document.getElementById('cardNumber').value;
+        const expiry = document.getElementById('expiry').value;
+        const cvv = document.getElementById('cvv').value;
+        const upiId = document.getElementById('upiId').value;
+
+        if (paymentMethod) {
+            if (paymentMethod.value === 'bank') {
+                // Validate bank payment details
+                if (name && cardNumber && expiry && cvv) {
+                    alert(`You have selected: Bank Transfer\nName: ${name}\nCard Number: ${cardNumber}\nExpiry: ${expiry}\nCVV: ${cvv}`);
+                } else {
+                    alert('Please fill in all bank payment details.');
+                    return;
+                }
+            } else if (paymentMethod.value === 'upi') {
+                // Validate UPI payment details
+                if (upiId) {
+                    alert(`You have selected: UPI Payment\nUPI ID: ${upiId}`);
+                } else {
+                    alert('Please fill in your UPI ID.');
+                    return;
+                }
+            } else {
+                alert('You have selected: Cash on Delivery');
+            }
+
+            // Redirect to delivery status page after payment
+            window.location.href = 'delivery-status.html'; // Navigate to delivery status page
+        } else {
+            alert('Please select a payment method.');
+        }
+    });
+</script>
+
+</body>
+</html>

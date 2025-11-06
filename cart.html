@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart</title>
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: aqua;
+            font-size: 20px;
+            margin: 0;
+            padding: 20px;
+            background: url(login\ back.jpeg) no-repeat;
+            background-size: cover;
+        }
+        b{
+            font-size: 20px;
+         }
+        #cart-container {
+            background: rgb(156, 141, 141);
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .cart-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+        }
+        .cart-item img {
+            width: 70px;
+            height: 70px;
+            border-radius: 5px;
+        }
+        .remove-btn, .buy-btn {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 20px
+        }
+        .decrease-btn, .increase-btn {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 20px;
+            width: 40px;
+        }
+        .remove-btn:hover, .buy-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+ 
+<div> 
+    <li><a href="index.html"><b>  Home</b></a></li>
+</div>
+
+<h1>Your Shopping Cart</h1>
+<div id="cart-container"></div>
+
+
+<script>
+    // Function to render the cart items
+    function displayCart() {
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let cartContainer = document.getElementById('cart-container');
+        cartContainer.innerHTML = ''; // Clear previous content
+
+        if (cart.length === 0) {
+            cartContainer.innerHTML = '<p>Your cart is empty</p>';
+            return;
+        }
+        let total = 0; // Initialize total variable
+       
+        cart.forEach((item, index) => {
+            total += item.price * item.quantity; // Add price * quantity to total
+           
+            cartContainer.innerHTML += `
+                <div class="cart-item">
+                    <img src="${item.image}" alt="${item.name}">
+                    <h5>${item.name}</h5>
+                    <p>Price: ₹${item.price}</p>
+                 <p>Quantity: 
+                    <button class="decrease-btn" data-index="${index}">-</button>
+                    ${item.quantity}
+                    <button class="increase-btn" data-index="${index}">+</button>
+                </p>
+                    <button class="remove-btn" data-index="${index}">Remove</button>
+                </div>
+            `;
+        });
+
+
+
+        //  // Display the total price
+    cartContainer.innerHTML += `
+        <h4>Total: ₹${total}</h4>
+    `;
+    
+    //Add a "Buy Now" button if the cart is not empty
+        cartContainer.innerHTML += `
+            <button id="buyButton" class="buy-btn">Buy Now</button>
+        `;
+
+        // Attach event listeners to remove buttons
+        document.querySelectorAll('.remove-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const index = this.dataset.index;
+                removeFromCart(index);
+            });
+        });
+
+        // Attach event listeners to quantity buttons
+    document.querySelectorAll('.increase-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const index = this.dataset.index;
+            updateQuantity(index, 1); // Increase quantity by 1
+        });
+    });
+
+    document.querySelectorAll('.decrease-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const index = this.dataset.index;
+            updateQuantity(index, -1); // Decrease quantity by 1
+        });
+    });
+
+        // Attach event listener to the "Buy Now" button
+        document.getElementById('buyButton').addEventListener('click', function() {
+            buyItems();
+        });
+    }
+
+    // Function to remove item from cart
+    function removeFromCart(index) {
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        cart.splice(index, 1); // Remove the item from the array
+        localStorage.setItem('cart', JSON.stringify(cart)); // Update localStorage
+        displayCart(); // Refresh the cart display
+    }
+
+    // Function to update item quantity
+function updateQuantity(index, change) {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    cart[index].quantity += change;
+
+    // Ensure quantity is at least 1
+    if (cart[index].quantity < 1) {
+        cart[index].quantity = 1;
+    }
+
+    localStorage.setItem('cart', JSON.stringify(cart)); // Update localStorage
+    displayCart(); // Refresh the cart display
+}
+
+    // Function to handle "Buy Now" action
+    function buyItems() {
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        if (cart.length === 0) {
+            alert('Your cart is empty.');
+            return;
+        }
+
+        // Generate an Order ID and store it
+        const orderId = 'ORD-' + Date.now();
+        localStorage.setItem('orderId', orderId);
+        
+        // Simulate storing order info and delivery status
+        localStorage.setItem('orderStatus', 'Processing');  // Set initial status
+        localStorage.setItem('orderItems', JSON.stringify(cart));  // Save cart items
+
+        // Clear the cart
+        localStorage.removeItem('cart');
+
+        // Redirect to the delivery page
+        window.location.href = 'deliver.html';  // Redirect to the delivery page
+    }
+
+    // Initialize the cart display when the page loads
+    displayCart();
+</script>
+
+</body>
+</html>

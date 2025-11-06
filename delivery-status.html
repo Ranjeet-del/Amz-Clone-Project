@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delivery Status</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+           background: url(login\ back.jpeg) no-repeat;
+           background-size: cover;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .status-container {
+            background: rgb(246, 242, 242);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: auto;
+        }
+        .status-container h2 {
+            margin-bottom: 20px;
+            text-align: center;
+            color: #007bff;
+        }
+        .status {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin: 20px 0;
+            padding: 20px 0; /* Additional padding for better spacing */
+            align-items: center;
+        }
+        .status-item {
+            text-align: center;
+            flex-grow: 1;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        .status-item:hover {
+            transform: scale(1.05);
+        }
+        .status-item:before {
+            content: '';
+            position: absolute;
+            top: 25px; /* Align with the middle of the status item */
+            left: 50%; /* Center the line */
+            transform: translateX(-50%); /* Center line */
+            width: calc(100% - 40px); /* Adjust for status item width */
+            height: 5px;
+            background-color: #007bff; /* Line color */
+            z-index: -1;
+        }
+        .status-item:first-child:before {
+            display: none; /* Hide the line before the first item */
+        }
+        .processing {
+            color: #FFA500; /* Orange for processing */
+            font-weight: bold;
+        }
+        .completed {
+            color: #4CAF50; /* Green for completed */
+            font-weight: bold;
+        }
+        .not-completed {
+            color: #9E9E9E; /* Grey for not completed */
+        }
+        .status-icon {
+            font-size: 30px; /* Icon size */
+            margin-bottom: 5px;
+        }
+        .delivery-info {
+            margin-top: 20px;
+            border-top: 1px solid #ddd;
+            padding-top: 20px;
+        }
+        .delivery-info p {
+            margin: 5px 0;
+        }
+        .update-address {
+            margin-top: 20px;
+        }
+        .update-address input {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            transition: border-color 0.3s;
+        }
+        .update-address input:focus {
+            border-color: #007bff;
+        }
+        .update-address button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%;
+        }
+        .update-address button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <div> 
+        <li><a href="index.html"><b>  Home</b></a></li>
+    </div>
+
+<div class="status-container">
+    <h2>Delivery Status</h2>
+    <div id="statusItems"></div>
+    <h3>Delivery Information</h3>
+    <div id="deliveryInfo" class="delivery-info"></div>
+    <div id="deliveryTime" class="delivery-time"></div>
+    <div class="update-address">
+        <h4>Update Address</h4>
+        <input type="text" id="newName" placeholder="Enter your name" />
+        <input type="text" id="newAddress" placeholder="Enter new address" />
+        <input type="text" id="newCity" placeholder="Enter your city" />
+        <input type="text" id="newState" placeholder="Enter your state" />
+        <input type="text" id="newMobile" placeholder="Enter your mobile number" />
+        <button id="updateAddressButton">Update Address</button>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get delivery info from local storage
+        const deliveryInfo = JSON.parse(localStorage.getItem('deliveryInfo'));
+        
+        // Display delivery information
+        const deliveryInfoContainer = document.getElementById('deliveryInfo');
+        if (deliveryInfo) {
+            deliveryInfoContainer.innerHTML = `
+                <p><strong>Name:</strong> ${deliveryInfo.name}</p>
+                <p><strong>Address:</strong> ${deliveryInfo.address}, ${deliveryInfo.city}, ${deliveryInfo.state}</p>
+                <p><strong>Mobile:</strong> ${deliveryInfo.mobile}</p>
+            `;
+        }
+
+        // Display order status
+        const statusItems = document.getElementById('statusItems');
+        const statuses = ['Ordered', 'Processing', 'Shipped', 'Out for Delivery', 'Delivered'];
+        const statusIcons = ['🛒', '⏳', '🚚', '📦', '✅'];
+
+        statuses.forEach((status, index) => {
+            const statusItem = document.createElement('div');
+            statusItem.className = 'status';
+
+            // Set class based on status
+            let statusClass = 'not-completed';
+            if (index === 1) {
+                statusClass = 'processing'; // Current status
+            } else if (index < 1) {
+                statusClass = 'completed'; // Completed statuses
+            }
+
+            statusItem.innerHTML = `
+                <div class="status-item ${statusClass}">
+                    <div class="status-icon">${statusIcons[index]}</div>
+                    ${status}
+                </div>
+            `;
+            statusItems.appendChild(statusItem);
+        });
+
+        // Display delivery time if order is delivered
+        const deliveryTimeContainer = document.getElementById('deliveryTime');
+        const deliveryTime = localStorage.getItem('deliveryTime'); // Assume it's stored in local storage
+        
+        if (deliveryTime) {
+            deliveryTimeContainer.innerHTML = `<p><strong>Delivery Time:</strong> ${deliveryTime}</p>`;
+        }
+
+        // Handle update address button click
+        document.getElementById('updateAddressButton').addEventListener('click', function() {
+            const newName = document.getElementById('newName').value;
+            const newAddress = document.getElementById('newAddress').value;
+            const newCity = document.getElementById('newCity').value;
+            const newState = document.getElementById('newState').value;
+            const newMobile = document.getElementById('newMobile').value;
+
+            if (newName && newAddress && newCity && newState && newMobile) {
+                // Update the delivery info in local storage
+                const updatedInfo = {
+                    name: newName,
+                    address: newAddress,
+                    city: newCity,
+                    state: newState,
+                    mobile: newMobile
+                };
+                localStorage.setItem('deliveryInfo', JSON.stringify(updatedInfo));
+                
+                // Update displayed address
+                deliveryInfoContainer.innerHTML = `
+                    <p><strong>Name:</strong> ${updatedInfo.name}</p>
+                    <p><strong>Address:</strong> ${updatedInfo.address}, ${updatedInfo.city}, ${updatedInfo.state}</p>
+                    <p><strong>Mobile:</strong> ${updatedInfo.mobile}</p>
+                `;
+                
+                // Clear the input fields
+                document.getElementById('newName').value = '';
+                document.getElementById('newAddress').value = '';
+                document.getElementById('newCity').value = '';
+                document.getElementById('newState').value = '';
+                document.getElementById('newMobile').value = '';
+                alert('Address updated successfully!');
+            } else {
+                alert('Please fill in all fields.');
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

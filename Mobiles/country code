@@ -1,0 +1,26 @@
+<select name="" id=" Country">
+            <option value="IND">+91 </option>
+            <option value="AFG">+93</option>
+            <option value="AUS">+61</option>
+            <option value="BGD">+880</option>
+            <option value="BTN">+975</option>
+            <option value="BR">+55</option>
+            <option value="CHN">+86</option>
+            <option value="COL">+57</option>
+            <option value="DNK">+45</option>
+            <option value="EGY">+20</option>
+            <option value="FRA">+33</option>
+            <option value="DEU">+49</option>
+            <option value="GRL">+299</option>
+            <option value="DKG">+852</option>
+            <option value="IDN">+62</option>
+            <option value="IRN">+98</option>
+            <option value="JPN">+81</option>
+            <option value="MYS">+60</option>
+            <option value="NZL">+64</option>
+            <option value="RUS">+7</option>
+            <option value="SGP">+64</option>
+            <option value="GBR">+44</option>
+            <option value="USA">+1</option>
+
+          </select>
